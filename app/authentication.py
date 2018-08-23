@@ -1,5 +1,6 @@
 #-*- encoding: utf-8 -*-
 from flask import Flask, Blueprint, current_app, render_template, jsonify
+from app import appcontext as ctx
 
 authentication = Blueprint("authentication", __name__, template_folder='templates')
 
@@ -29,8 +30,11 @@ def logout():
 
 @authentication.before_request
 def before_request():
+	user1 = ctx.User.query.all()
+	print(user1)
 	print("authentication before_request....!")
 
 @authentication.after_request
 def after_request(response):
 	print("authentication after_request....!")
+	return response

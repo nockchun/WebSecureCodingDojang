@@ -1,0 +1,103 @@
+{% extends "home.html" %}
+
+{% block body %}
+<div class="container-fluid">
+
+  <!-- Breadcrumbs-->
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a href="/other/bypass_field">Other Case</a>
+    </li>
+    <li class="breadcrumb-item active">Bypass Field</li>
+  </ol>
+
+  <!-- Page Content -->
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Bypass Field Restrictions</h5>
+          <form action="/other/bypass_field" method="POST">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Email address</label>
+              <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="Enter email">
+              <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            </div>
+            <div class="form-group">
+              <label for="disabledinput">Disabled input</label>
+              <input type="text" id="disabledinput" name="disabledinput" class="form-control" placeholder="Disabled input" value="87654321" readonly>
+            </div>
+            <div class="form-group">
+              <label for="selectcase">Select Coupon</label>
+              <select class="form-control" id="selectcoupon" name="selectcoupon">
+                <option value="10000">case a</option>
+                <option value="20000">case b</option>
+                <option value="30000">case c</option>
+              </select>
+            </div>
+            <fieldset class="form-group">
+              <label>Radio Coupon</label>
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="radiocoupon" id="radiocoupon1" value="10000" checked>
+                  Option one is ...
+                </label>
+              </div>
+              <div class="form-check">
+              <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="radiocoupon" id="radiocoupon2" value="20000">
+                  Option two can ...
+                </label>
+              </div>
+              <div class="form-check disabled">
+              <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="radiocoupon" id="radiocoupon3" value="100000" disabled>
+                  Option three is disabled
+                </label>
+              </div>
+            </fieldset>
+            <div class="form-group">
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input" id="checkmeout" name="checkmeout">
+                  Check me out
+                </label>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Value Passed To The Server</h5>
+          <fieldset disabled>
+            <div class="form-group">
+              <label for="emaildata">Email address</label>
+              <input type="text" id="emaildata" class="form-control" value="{{form.email.data}}">
+            </div>
+            <div class="form-group">
+              <label for="disabledinputdata">Disabled input</label>
+              <input type="text" id="disabledinputdata" class="form-control" value="{{form.disabledinput.data}}">
+            </div>
+            <div class="form-group">
+              <label for="selectcoupondata">Select Coupon</label>
+              <input type="text" id="selectcoupondata" class="form-control" value="{{form.selectcoupon.data}}">
+            </div>
+            <div class="form-group">
+              <label for="radiocoupon">Radio Coupon</label>
+              <input type="text" id="radiocoupondata" class="form-control" value="{{form.radiocoupon.data}}">
+            </div>
+            <div class="form-group">
+              <label for="checkmeoutdata">Check me out</label>
+              <input type="text" id="checkmeoutdata" class="form-control" value="{{form.checkmeout.data}}">
+            </div>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

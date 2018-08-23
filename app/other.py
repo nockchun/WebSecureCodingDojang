@@ -1,7 +1,9 @@
 #-*- encoding: utf-8 -*-
-from flask import Flask, Blueprint, current_app, render_template, jsonify
+from flask import Flask, Blueprint, current_app, render_template, jsonify, request
+from wtforms import Form, BooleanField, StringField, PasswordField, validators
+from app import appcontext as ctx
 
-other = Blueprint("other", __name__, template_folder='templates')
+other = Blueprint("other", __name__, template_folder='templates', url_prefix="/other")
 
 @other.route('/error', methods=['GET'])
 def error():
@@ -20,3 +22,24 @@ def charts():
 	# current_app.logger.info('Resource requested: %s', ('welcome'))
 	salutation = 'Thank for using flask-fundamentum!'
 	return render_template("charts.html", msg=salutation)
+
+@other.route('/init_db', methods=['GET'])
+def init_db():
+	ctx.db.create_all()
+	user1 = ctx.User(1, "user1", "user1@mail.com")
+	ctx.db.session.add(user1)
+	ctx.db.session.commit()
+	return jsonify(resp="init db...")
+
+#- Bypass Field Form
+class BypassFieldForm(Form):
+	email = StringField("email")
+	disabledinput = StringField("disabledinput", [validators.Length(min=4, max=25)])
+	selectcoupon = StringField("selectcoupon")
+	radiocoupon = StringField("radiocoupon")
+	checkmeout = BooleanField("checkmeout")
+
+@other.route('/bypass_field', methods=['GET', 'POST'])
+def bypass_field():
+	form = BypassFieldForm(request.form)
+	return render_template("bypass_field.html", form=form)
