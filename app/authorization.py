@@ -24,5 +24,4 @@ def myinfo():
 	""".format(username)
 	result = ctx.db.engine.execute(sql).fetchone()
 
-	print(result)
 	return render_template("myinfo.html", user=result)

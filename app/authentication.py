@@ -8,17 +8,12 @@ authentication = Blueprint("authentication", __name__, template_folder='template
 # Login ----------------------------------------------------------------------------
 @authentication.route('/login', methods=['GET'])
 def login():
-	# current_app.logger.info('Resource requested: %s', ('welcome'))
 	salutation = 'Thank for using flask-fundamentum!'
-	return render_template("login.html", msg=salutation)
+	return render_template("login.html")
 
 class LoginForm(Form):
 	inputUsername = StringField("inputUsername")
 	inputPassword = StringField("inputPassword")
-	confirmPassword = StringField("confirmPassword")
-	firstName = StringField("firstName")
-	lastName = StringField("lastName")
-	inputEmail = StringField("inputEmail")
 
 @authentication.route('/login_do', methods=['POST'])
 def loginDo():
@@ -34,7 +29,7 @@ def loginDo():
 	result = ctx.db.engine.execute(sql).fetchall()
 
 	if (len(result) > 0):
-		resp = make_response(render_template("myinfo.html"))
+		resp = make_response(render_template("myinfo.html", user=result[0]))
 		resp.set_cookie("sc_u", form.inputUsername.data)
 		return resp
 	return render_template("login.html")
@@ -70,13 +65,6 @@ def registerDoAdd():
 	# current_app.logger.info('New User Added: %s', (newUser))
 
 	return render_template("login.html")
-
-# Forgot Password ------------------------------------------------------------------
-@authentication.route('/forgot-password', methods=['GET'])
-def forgot_password():
-	# current_app.logger.info('Resource requested: %s', ('welcome'))
-	salutation = 'Thank for using flask-fundamentum!'
-	return render_template("forgot-password.html", msg=salutation)
 
 # Logout ---------------------------------------------------------------------------
 @authentication.route('/logout', methods=['GET'])
