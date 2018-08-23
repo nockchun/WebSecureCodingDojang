@@ -1,4 +1,5 @@
 #-*- encoding: utf-8 -*-
+import os
 from flask import Flask, Blueprint, current_app, render_template, jsonify, request
 from wtforms import Form, BooleanField, StringField, PasswordField, validators
 from app import appcontext as ctx
@@ -25,13 +26,18 @@ def charts():
 
 @other.route('/init_db', methods=['GET'])
 def init_db():
-	ctx.db.create_all()
-	user1 = ctx.User(1, "user1", "user1@mail.com")
-	ctx.db.session.add(user1)
-	ctx.db.session.commit()
-	return jsonify(resp="init db...")
+	project_dir = os.path.dirname(os.path.abspath(__file__))
+	database_file = os.path.join(project_dir, "../secorecoding.db")
+	if os.path.exists(database_file):
+		os.remove(database_file)
 
-#- Bypass Field Form
+	ctx.db.create_all()
+	admin = ctx.User("admin", "admin", "admin@localhost.local", "coding", "secure")
+	ctx.db.session.add(admin)
+	ctx.db.session.commit()
+	return render_template("dashboard.html")
+
+# Bypass Field Form
 class BypassFieldForm(Form):
 	email = StringField("email")
 	disabledinput = StringField("disabledinput", [validators.Length(min=4, max=25)])

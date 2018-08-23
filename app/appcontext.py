@@ -10,8 +10,10 @@ def create_app():
 	from .home import home
 	from .authentication import authentication
 	from .other import other
+	from .authorization import authorization
 	app.register_blueprint(home)
 	app.register_blueprint(authentication)
+	app.register_blueprint(authorization)
 	app.register_blueprint(other)
 
 	return app
@@ -31,16 +33,21 @@ db = create_db()
 
 class User(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
-	username = db.Column(db.String(80), unique=True, nullable=False)
-	email = db.Column(db.String(120), unique=True, nullable=False)
+	username = db.Column(db.String(80), nullable=False)
+	password = db.Column(db.String(80), nullable=False)
+	email = db.Column(db.String(120))
+	firstname = db.Column(db.String(80))
+	lastname = db.Column(db.String(80))
 
-	def __init__(self, id, username, email):
-		self.id = id
+
+	def __init__(self, username, password, email, firstname, lastname):
 		self.username = username
+		self.password = password
 		self.email = email
+		self.firstname = firstname
+		self.lastname = lastname
 
 	def __repr__(self):
-		return "<User %r>" % self.username
-
-
+		return "[User > id:{}, pass:{}, email:{}, first:{}, last:{}]" \
+			.format(self.username, self.password, self.email, self.firstname, self.lastname)
 
