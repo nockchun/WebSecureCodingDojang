@@ -1,7 +1,6 @@
 #-*- encoding: utf-8 -*-
 from flask import Flask, Blueprint, current_app, render_template, jsonify, request, redirect, make_response 
 from wtforms import Form, BooleanField, StringField, PasswordField, validators
-from app import appcontext as ctx
 
 authentication = Blueprint("authentication", __name__, template_folder='templates')
 
@@ -17,6 +16,7 @@ class LoginForm(Form):
 
 @authentication.route('/login_do', methods=['POST'])
 def loginDo():
+	from app import appcontext as ctx
 	form = LoginForm(request.form)
 
 	### vulnerable

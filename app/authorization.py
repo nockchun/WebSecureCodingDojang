@@ -1,7 +1,6 @@
 #-*- encoding: utf-8 -*-
 from flask import Flask, Blueprint, current_app, render_template, jsonify, request
 from wtforms import Form, BooleanField, StringField, PasswordField, validators
-from app import appcontext as ctx
 
 authorization = Blueprint("member", __name__, template_folder='templates', url_prefix="/authorization")
 
@@ -15,6 +14,7 @@ class BypassFieldForm(Form):
 
 @authorization.route('/myinfo', methods=['GET', 'POST'])
 def myinfo():
+	from app import appcontext as ctx
 	username = request.cookies.get("sc_u")
 	### vulnerable
 	sql = """
