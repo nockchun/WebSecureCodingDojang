@@ -2,7 +2,6 @@
 import os
 from flask import Flask, Blueprint, current_app, render_template, jsonify, request
 from wtforms import Form, BooleanField, StringField, PasswordField, validators
-from app import appcontext as ctx
 
 other = Blueprint("other", __name__, template_folder='templates', url_prefix="/other")
 
@@ -26,6 +25,7 @@ def charts():
 
 @other.route('/init_db', methods=['GET'])
 def init_db():
+	from app import appcontext as ctx
 	project_dir = os.path.dirname(os.path.abspath(__file__))
 	database_file = os.path.join(project_dir, "../secorecoding.db")
 	if os.path.exists(database_file):
