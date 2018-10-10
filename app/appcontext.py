@@ -16,6 +16,8 @@ def create_app():
 	app.register_blueprint(authorization)
 	app.register_blueprint(other)
 
+	app.secret_key = "secure coding"
+
 	return app
 
 app = create_app()

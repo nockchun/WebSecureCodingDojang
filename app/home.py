@@ -1,5 +1,5 @@
 #-*- encoding: utf-8 -*-
-from flask import Flask, Blueprint, current_app, render_template, jsonify
+from flask import Flask, Blueprint, current_app, render_template, jsonify, request
 
 home = Blueprint("home", __name__, template_folder='templates')
 
@@ -18,3 +18,8 @@ def dashboard():
 @home.route('/print/<input>', methods=['GET'])
 def print_url_param(input=None):
 	return jsonify(resp=input)
+
+@home.route("/xxx", methods=["GET"])
+def test_xxx():
+	a = request.args.get("uuu")
+	return "hello." + a

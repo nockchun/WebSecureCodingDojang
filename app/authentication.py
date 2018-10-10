@@ -1,5 +1,5 @@
 #-*- encoding: utf-8 -*-
-from flask import Flask, Blueprint, current_app, render_template, jsonify, request, redirect, make_response 
+from flask import Flask, Blueprint, current_app, render_template, jsonify, request, redirect, make_response, session
 from wtforms import Form, BooleanField, StringField, PasswordField, validators
 
 authentication = Blueprint("authentication", __name__, template_folder='templates')
@@ -31,6 +31,7 @@ def loginDo():
 	if (len(result) > 0):
 		resp = make_response(render_template("myinfo.html", user=result[0]))
 		resp.set_cookie("sc_u", form.inputUsername.data)
+		session["username"] = form.inputUsername.data
 		return resp
 	return render_template("login.html")
 
@@ -70,5 +71,7 @@ def registerDoAdd():
 @authentication.route('/logout', methods=['GET'])
 def logout():
 	# current_app.logger.info('Resource requested: %s', ('welcome'))
-	salutation = 'Thank for using flask-fundamentum!'
-	return render_template("dashboard.html", msg=salutation)
+	resp = make_response(render_template("dashboard.html"))
+	session.pop('username', None)
+	resp.set_cookie('sc_u', '', expires=0)
+	return resp
